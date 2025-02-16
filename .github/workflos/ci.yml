@@ -24,6 +24,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Run Bandit (SAST)
+         run: |
+          pip install bandit
+          bandit -r . -f json -o bandit_results.json
+
+      - name: Upload Bandit Report
+          uses: actions/upload-artifact@v3
+          with:
+            name: bandit-report
+            path: bandit_results.json
+
       - name: Run unit tests
         run: |
           python -m pytest 
